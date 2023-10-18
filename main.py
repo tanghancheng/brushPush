@@ -34,13 +34,18 @@ commit_message = "Added a new file"
 subprocess.run(["git", "commit", "-m", commit_message])
 log_to_file(f"Committed changes with message: '{commit_message}'")
 
-# 切换分支并创建分支（如果分支不存在）
+# 检查分支是否存在，如果不存在则创建
 branch_name = "new-branch"
-subprocess.run(["git", "checkout", "-b", branch_name])
-log_to_file(f"Switched to branch '{branch_name}'")
+branch_check = subprocess.run(["git", "rev-parse", "--verify", branch_name], stdout=subprocess.PIPE)
+if branch_check.returncode != 0:
+    subprocess.run(["git", "checkout", "-b", branch_name])
+    log_to_file(f"Created and switched to new branch '{branch_name}'")
+else:
+    subprocess.run(["git", "checkout", branch_name])
+    log_to_file(f"Switched to existing branch '{branch_name}'")
 
 # 推送新分支到远程仓库
 subprocess.run(["git", "push", "-u", "origin", branch_name])
-log_to_file(f"Pushed new branch '{branch_name}' to remote repository")
+log_to_file(f"Pushed branch '{branch_name}' to remote repository")
 
 print("操作已记录到日志文件中。")
