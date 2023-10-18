@@ -6,7 +6,7 @@ from datetime import datetime
 current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 # 指定日志文件的路径
-log_file = "./git_push_log.txt"
+log_file = "git_push_log.txt"
 
 # 初始化日志文件，如果不存在则创建
 if not os.path.exists(log_file):
@@ -39,8 +39,8 @@ branch_name = "new-branch"
 subprocess.run(["git", "checkout", "-b", branch_name])
 log_to_file(f"Switched to branch '{branch_name}'")
 
-# 推送更改到远程仓库
-subprocess.run(["git", "push"])
-log_to_file("Pushed changes to remote repository")
+# 推送新分支到远程仓库
+subprocess.run(["git", "push", "-u", "origin", branch_name])
+log_to_file(f"Pushed new branch '{branch_name}' to remote repository")
 
 print("操作已记录到日志文件中。")
